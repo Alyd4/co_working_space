@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import { IoAtSharp } from "react-icons/io5";
-import { FiLock } from "react-icons/fi";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 import axios from 'axios';
 import logo from "../assets/logo_sembangin.png";
 import pin from "../assets/pin.png";
@@ -17,6 +17,7 @@ const apiUrl = import.meta.env.VITE_API_URL;
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
@@ -27,14 +28,18 @@ const Login = () => {
 
       if (response.status === 200) {
         const { isAdmin } = response.data;
-
-
+    
+        // Store the user information in localStorage
+        localStorage.setItem('user', JSON.stringify({ email, isAdmin }));
+    
+        // Navigate based on the isAdmin flag
         if (isAdmin) {
-          navigate('/Aadmin', { state: { email: email } });
+            navigate('/Aadmin', { state: { email: email } });
         } else {
-          navigate('/users');
+            navigate('/');
         }
-      }
+    }
+    
     } catch (err) {
       console.log(err);
       if (err.response && err.response.data) {
@@ -83,15 +88,18 @@ const Login = () => {
               </label>
               <div className="relative">
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   id="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="8+ Karakter, 1 Huruf Besar"
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
                 />
-                <span className="absolute inset-y-0 right-0 flex items-center pr-3">
-                  <FiLock />
+                <span
+                  className="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <FiEyeOff /> : <FiEye />}
                 </span>
               </div>
             </div>

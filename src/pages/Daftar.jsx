@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { IoAtSharp } from 'react-icons/io5';
-import { FiLock } from 'react-icons/fi';
+import { IoAtSharp } from "react-icons/io5";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 import axios from 'axios';
 import logo from '../assets/logo_sembangin.png';
 import pin from '../assets/pin.png';
@@ -20,6 +20,7 @@ console.log(apiUrl); // Pastikan variabel lingkungan terhubung
 const Register = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(false);
     const navigate = useNavigate();
@@ -84,23 +85,27 @@ const Register = () => {
                             </div>
                         </div>
                         <div className="mb-6">
-                            <label className="block text-gray-700 text-sm font-semibold mb-2" htmlFor="password">
-                                Kata Sandi
-                            </label>
-                            <div className="relative">
-                                <input
-                                    type="password"
-                                    id="password"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    placeholder="8+ Karakter, 1 Huruf Besar"
-                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
-                                />
-                                <span className="absolute inset-y-0 right-0 flex items-center pr-3">
-                                    <FiLock />
-                                </span>
-                            </div>
-                        </div>
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
+                Kata Sandi
+              </label>
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="8+ Karakter, 1 Huruf Besar"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+                />
+                <span
+                  className="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <FiEyeOff /> : <FiEye />}
+                </span>
+              </div>
+            </div>
+
                         <button
                             type="submit"
                             className="w-full bg-blue-600 text-white font-bold py-2 rounded-lg hover:bg-blue-700 transition duration-300"

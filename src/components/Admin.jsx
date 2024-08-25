@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 function AddItem() {
   const [itemName, setItemName] = useState("");
@@ -59,15 +62,26 @@ function AddItem() {
           'Content-Type': 'multipart/form-data',
         },
       });
-
+      toast.success("Item berhasil ditambahkan!")
       console.log("Item berhasil ditambahkan:", response.data);
+      setItemName("");
+      setPrice("");
+      setCategory("Produk");
+      setFeatures([]);
+      setFeatureInput("");
+      setDescription("");
+      setImage(null);
+      setImagePreview(null);
+      
     } catch (error) {
+      toast.error("item gagal ditambahkan: " ); 
       console.error("Error:", error.response?.data?.error || error.message);
     }
   };
 
   return (
     <div className="flex flex-col items-center bg-gray-100 p-8">
+      <ToastContainer />
       <form onSubmit={handleSubmit} className="w-full max-w-lg bg-white p-8 rounded-lg shadow-lg">
         <div className="mb-6">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="image">
@@ -168,7 +182,7 @@ function AddItem() {
             required
           />
         </div>
-        <div className="mb-4">
+        <div className="mb-4 ">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="features">
             Fitur
           </label>
@@ -185,7 +199,7 @@ function AddItem() {
               onClick={handleAddFeature}
               className="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             >
-              Tambah Fitur
+              Tambah
             </button>
           </div>
           <ul className="mt-2">
@@ -203,7 +217,7 @@ function AddItem() {
             ))}
           </ul>
         </div>
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-center">
           <button
             type="submit"
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
