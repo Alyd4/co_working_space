@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from 'axios'; // Import axios if you need to make an API call
 
 function Header({ onSearch }) {
   const [searchQuery, setSearchQuery] = useState("");
-  const location = useLocation();
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem('user'));
   const email = user ? user.email : null;
+
   const handleSearchChange = (e) => {
     const query = e.target.value;
     setSearchQuery(query);
@@ -20,7 +20,7 @@ function Header({ onSearch }) {
       // await axios.post('/api/auth/logout');
 
       // Clear user data from local storage or session storage
-      localStorage.removeItem('email');
+      localStorage.removeItem('user'); // Changed from 'email' to 'user'
      
       // Redirect to the login page or home page
       navigate('/'); // Change this to the appropriate route
@@ -46,7 +46,7 @@ function Header({ onSearch }) {
       <div className="flex items-center space-x-4">
         <span className="font-medium text-gray-600">{email}</span>
         <button
-          className="text-red-500 hover:text-red-700"
+          className="flex items-center space-x-2 bg-red-500 hover:bg-red-700 text-white py-2 px-4 rounded-md"
           onClick={handleLogout}
         >
           <svg
@@ -63,6 +63,7 @@ function Header({ onSearch }) {
               d="M6 18L18 6M6 6l12 12"
             />
           </svg>
+          <span className="text-sm font-medium">Logout</span>
         </button>
       </div>
     </header>
