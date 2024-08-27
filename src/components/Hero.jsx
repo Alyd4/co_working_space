@@ -27,6 +27,7 @@ function Hero() {
       produk: '/Product',
       product : '/Product',
       layanan: '/Layanan',
+      website : '/Product',
       pricing: '/', // Example for an additional keyword
       // Add more mappings as needed
     };

@@ -6,9 +6,8 @@ function Header({ onSearch }) {
   const [searchQuery, setSearchQuery] = useState("");
   const location = useLocation();
   const navigate = useNavigate();
-  const email = localStorage.getItem('email');
-
-
+  const user = JSON.parse(localStorage.getItem('user'));
+  const email = user ? user.email : null;
   const handleSearchChange = (e) => {
     const query = e.target.value;
     setSearchQuery(query);
