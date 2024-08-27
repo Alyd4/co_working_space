@@ -1,77 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { BsCheckLg } from "react-icons/bs";
-import Absen from "../assets/presensi.png";
-import Humanis from "../assets/HumanIS.png";
-import Nametag from "../assets/nametag.png";
-import Website from "../assets/web2.png";
-import Banner from "../assets/banner.png";
-import Backdrop from "../assets/backdrop.png";
-import Vest from "../assets/vest.png";
+
 import { useNavigate } from 'react-router-dom';
 
-const products = [
-  {
-    name: 'Aplikasi Absen',
-    description: 'Tingkatkan Efisiensi Kehadiran dengan Aplikasi Absen efektif',
-    price: 'Rp.730.000',
-    features: ['Lorem ipsum', 'Lorem ipsum', 'Lorem ipsum'],
-    img: Absen,
-  },
-  {
-    name: 'Aplikasi Formulir',
-    description: 'Formulir digital praktis untuk pengumpulan data',
-    price: 'Rp.620.000',
-    features: ['Lorem ipsum', 'Lorem ipsum', 'Lorem ipsum'],
-    img: Humanis,
-  },
-  {
-    name: 'Website',
-    description: 'Bangun Website online yang sesuai kebutuhan anda',
-    price: 'Rp.590.000',
-    features: ['Lorem ipsum', 'Lorem ipsum', 'Lorem ipsum'],
-    img: Website,
-  },
-  {
-    name: 'Standing Banner',
-    description: 'Standing banner menarik untuk memperkuat pesan bisnis anda',
-    price: 'Rp.300.000',
-    features: ['Lorem ipsum', 'Lorem ipsum', 'Lorem ipsum'],
-    img: Banner,
-  },
-  {
-    name: 'Nametag',
-    description: 'Nametag Kustom untuk Identifikasi yang Jelas dan Profesional',
-    price: 'Rp.260.000',
-    features: ['Lorem ipsum', 'Lorem ipsum', 'Lorem ipsum'],
-    img: Nametag,
-  },
-  {
-    name: 'Lanyard',
-    description: 'Lanyard Desain Kustom anda dengan design yang menarik',
-    price: 'Rp.380.000',
-    features: ['Lorem ipsum', 'Lorem ipsum', 'Lorem ipsum'],
-    img: Nametag,
-  },
-  {
-    name: 'Backdrop',
-    description: 'Backdrop Kustom untuk Latar Belakang yang Memukau di Setiap Acara',
-    price: 'Rp.420.000',
-    features: ['Lorem ipsum', 'Lorem ipsum', 'Lorem ipsum'],
-    img: Backdrop,
-  },
-  {
-    name: 'Vest',
-    description: 'Vest Serbaguna dengan Branding yang Menonjol untuk Acara dan Aktivitas Lapangan',
-    price: 'Rp.210.000',
-    features: ['Lorem ipsum', 'Lorem ipsum', 'Lorem ipsum'],
-    img: Vest,
-  },
-];
+const apiUrl = import.meta.env.VITE_API_URL;
+
 
 const ProductCard = ({ name, description, price, features, img }) => {
   const navigate = useNavigate();
 
+
   const handleBuyClick = () => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    const email = user ? user.email : null;
+  
+    if (!email) {
+      // Redirect to login page if email is not found
+      navigate('/login');
+      return;
+    }
     // Prepare data to be passed
     const data = {
       name,
@@ -79,6 +26,8 @@ const ProductCard = ({ name, description, price, features, img }) => {
       price,
       features,
       img,
+
+      
     };
 
     // Navigate to another screen and pass data
@@ -116,7 +65,58 @@ const ProductCard = ({ name, description, price, features, img }) => {
   );
 };
 
-const ProductCategory = () => (
+
+const ProductCategory = () => {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch(`${apiUrl}/api/item/`);
+        const data = await response.json();
+        console.log(data);
+  
+        // Filter the data to include only items in the "Pricing" category
+        const filteredData = data.filter(item => item.kategori == "Produk");
+  
+        // Process the filtered data to parse features JSON strings
+        const processedData = filteredData.map(item => {
+          let parsedFeatures;
+          
+          try {
+            // Parse the fitur string twice because it's double-encoded
+            parsedFeatures = JSON.parse(JSON.parse(item.fitur));
+            
+            // Ensure parsedFeatures is an array
+            if (!Array.isArray(parsedFeatures)) {
+              parsedFeatures = [parsedFeatures];
+            }
+          } catch (e) {
+            // If parsing fails, handle the single string or invalid JSON gracefully
+            console.error('Failed to parse fitur:', e);
+            parsedFeatures = [item.fitur.replace(/['"]+/g, '')]; // Remove quotes if it's not a JSON array
+          }
+  
+          return {
+
+            name: item.nama,
+            description: item.deskripsi,
+            price: `Rp ${parseFloat(item.harga).toLocaleString('id-ID', { minimumFractionDigits: 2 })}/Bulan`,
+            features: parsedFeatures,
+            img: item.gambarUrl
+          };
+        });
+  
+        setProducts(processedData);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
+    };
+  
+    fetchProducts();
+  }, []);
+  
+  return (
   <div className="bg-white py-8 px-12 pt-28 pb-12">
     <h2 className="text-2xl font-bold text-blue-600 mb-4">Kategori Produk</h2>
     <p className="text-gray-600 mb-8">Dari aplikasi hingga desain visual yang mengesankan, kami menyediakan segala yang dibutuhkan untuk mengoptimalkan operasional anda dan memperkuat identitas brand di setiap event dan lingkungan kerja.</p>
@@ -127,5 +127,6 @@ const ProductCategory = () => (
     </div>
   </div>
 );
+}
 
 export default ProductCategory;

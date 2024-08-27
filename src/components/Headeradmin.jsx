@@ -6,7 +6,8 @@ function Header({ onSearch }) {
   const [searchQuery, setSearchQuery] = useState("");
   const location = useLocation();
   const navigate = useNavigate();
-  const { email } = location.state || {};
+  const email = localStorage.getItem('email');
+
 
   const handleSearchChange = (e) => {
     const query = e.target.value;

@@ -10,7 +10,7 @@ function EditModal({ isOpen, onClose, item, onSave }) {
     kategori: "",
     gambarUrl: "",
   });
-
+  const [imagePreview, setImagePreview] = useState(null);
   const [featureInput, setFeatureInput] = useState("");
   const [features, setFeatures] = useState([]);
 
@@ -32,12 +32,13 @@ function EditModal({ isOpen, onClose, item, onSave }) {
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
     if (type === "file") {
-      setFormData({ ...formData, [name]: files[0] });
+      const file = files[0];
+      setFormData({ ...formData, [name]: file });
+      setImagePreview(URL.createObjectURL(file)); // Set preview ke gambar baru
     } else {
       setFormData({ ...formData, [name]: value });
     }
   };
-
   const handleAddFeature = () => {
     if (featureInput) {
       setFeatures([...features, featureInput]);
@@ -94,16 +95,21 @@ function EditModal({ isOpen, onClose, item, onSave }) {
           </div>
 
           <div className="mb-4">
-            <label className="block text-gray-700">Kategori:</label>
-            <input
-              type="text"
-              name="kategori"
-              value={formData.kategori}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border rounded"
-            />
-          </div>
-
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="category">
+            Kategori
+          </label>
+          <select
+            id="category"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            value={formData.kategori}
+            onChange={(e) => setCategory(e.target.value)}
+            required
+          >
+            <option value="Produk">Produk</option>
+            <option value="Layanan">Layanan</option>
+            <option value="Pricing">Pricing</option>
+          </select>
+        </div>
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="features">
               Fitur
@@ -121,7 +127,7 @@ function EditModal({ isOpen, onClose, item, onSave }) {
                 onClick={handleAddFeature}
                 className="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               >
-                Tambah Fitur
+                Tambah
               </button>
             </div>
             <ul className="mt-2">
@@ -138,31 +144,7 @@ function EditModal({ isOpen, onClose, item, onSave }) {
                 </li>
               ))}
             </ul>
-          </div>
-        </div>
-
-        {/* Right Side: Image */}
-        <div className="w-1/2 pl-4">
-          <div className="mb-4">
-            <label className="block text-gray-700">Gambar:</label>
-            <input
-              type="file"
-              name="gambar"
-              onChange={handleChange}
-              className="w-full px-3 py-2 border rounded"
-            />
-            {formData.gambarUrl && (
-              <img
-                src={formData.gambarUrl}
-                alt="Preview"
-                className="mt-4 w-full h-auto rounded"
-              />
-            )}
-          </div>
-        </div>
-      </div>
-
-      <div className="flex justify-end mt-4">
+            <div className="flex  justify-center">
         <button
           onClick={onClose}
           className="mr-4 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
@@ -176,6 +158,33 @@ function EditModal({ isOpen, onClose, item, onSave }) {
           Save
         </button>
       </div>
+          </div>
+        </div>
+
+        {/* Right Side: Image */}
+        <div className="w-1/2 pl-4">
+          <div className="mb-4">
+            <label className="block text-gray-700">Gambar:</label>
+            <input
+              type="file"
+              name="gambar"
+              onChange={handleChange}
+              className="w-full px-3 py-2 border rounded"
+            />
+             {imagePreview && (
+              <img
+                src={imagePreview}
+                alt="Preview"
+                className="mt-4 w-50 h-50 h-auto rounded"
+              />
+            )}
+          </div>
+         
+        </div>
+
+      </div>
+
+     
     </div>
   );
 }

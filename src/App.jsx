@@ -6,7 +6,7 @@ import AboutUs from "./pages/AboutUs";
 import Contact from "./pages/Contact";
 import Login from "./pages/Login";
 import Daftar from "./pages/Daftar";
-import Invoice from "./components/Invoice";
+import Invoice from "./pages/InvoiceScreen";
 import Admin from "./components/Admin";
 import Admin2 from "./components/Admin2";
 import Aadmin from "./pages/Aadmin";

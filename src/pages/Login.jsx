@@ -25,21 +25,25 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post(`${apiUrl}/api/auth/login`, { email, password });
-
+  
       if (response.status === 200) {
         const { isAdmin } = response.data;
-    
+  
+        // Debugging Logs
+        console.log('Admin status:', isAdmin);
+        console.log('Email:', email);
+  
         // Store the user information in localStorage
         localStorage.setItem('user', JSON.stringify({ email, isAdmin }));
-    
+  
         // Navigate based on the isAdmin flag
         if (isAdmin) {
-            navigate('/Aadmin', { state: { email: email } });
+          console.log('Admin login successful:', email);
+          navigate('/aadmin', { state: { email: email } });
         } else {
-            navigate('/');
+          navigate('/');
         }
-    }
-    
+      }
     } catch (err) {
       console.log(err);
       if (err.response && err.response.data) {
@@ -49,6 +53,7 @@ const Login = () => {
       }
     }
   };
+  
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-blue-100">

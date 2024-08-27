@@ -1,21 +1,44 @@
 import React, { useEffect, useState } from 'react';
 import { BsCheckLg } from "react-icons/bs";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useLocation } from 'react-router-dom';
+
+const apiUrl = import.meta.env.VITE_API_URL;
 
 const ProductCard = ({ name, description, price, features }) => {
   const navigate = useNavigate();
+  const location = useLocation();
+  console.log('Location State:', location.state);
   const isPremium = name === 'Premium';
-  const isCustom = name === 'Custom';
+  const isCustom = name === 'Costume';  // Sesuaikan pengecekan untuk "Costume"
+  
+  const sellerEmail = "pkbikepri@pkbi.or.id"; // Ganti dengan email penjual atau penyedia website
 
   const handleBuyClick = () => {
-    const data = {
-      name,
-      description,
-      price,
-      features,
-    };
 
-    navigate('/invoice', { state: { data } });
+    const user = JSON.parse(localStorage.getItem('user'));
+    const email = user ? user.email : null;
+  
+    if (!email) {
+      // Redirect to login page if email is not found
+      navigate('/login');
+      return;
+    }
+    if (isCustom) {
+      // Jika produk adalah "Costume", arahkan ke email penjual
+      window.location.href = `mailto:${sellerEmail}?subject=Permintaan%20untuk%20Paket%20Kostum&body=Saya%20tertarik%20dengan%20paket%20kostum%20Anda.%20Mohon%20berikan%20informasi%20lebih%20lanjut.`;
+    
+    } else {
+     
+      const data = {
+        name,
+        description,
+        price,
+        features,
+    
+      };
+
+      navigate('/invoice', { state: { data } });
+    }
   };
 
   return (
@@ -23,16 +46,19 @@ const ProductCard = ({ name, description, price, features }) => {
       <div className="flex flex-col flex-grow">
         <h3 className="text-lg font-semibold mb-2 text-center">{name}</h3>
         <p className="text-sm text-gray-600 mb-2 text-left">{description}</p>
-        <p className="text-lg font-bold text-blue-600 mb-2 text-left">{price}</p>
-
+        
+        {/* Abaikan harga jika produk adalah "Costume" */}
         {!isCustom && (
-          <button className="bg-blue-600 text-white py-2 px-4 rounded-xl w-[80%] mx-auto my-2" onClick={handleBuyClick}>
-            Beli
-          </button>
+          <>
+            <p className="text-lg font-bold text-blue-600 mb-2 text-left">{price}</p>
+            <button className="bg-blue-600 text-white py-2 px-4 rounded-xl w-[80%] mx-auto my-2" onClick={handleBuyClick}>
+              Beli
+            </button>
+          </>
         )}
 
-        {/* Render features as a list of individual items */}
-        {Array.isArray(features) && features.length > 0 && (
+        {/* Abaikan fitur jika produk adalah "Costume" */}
+        {!isCustom && Array.isArray(features) && features.length > 0 && (
           <ul className="text-sm text-gray-600 mb-4 text-center mt-5">
             {features.map((feature, index) => (
               <li key={index} className="flex">
@@ -61,18 +87,21 @@ const ProductCategory = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch('http://10.10.10.254:5000/api/item/');
+        const response = await fetch(`${apiUrl}/api/item/`);
         const data = await response.json();
-        console.log(data)
-
-        // Process the data to parse features JSON strings
-        const processedData = data.map(item => {
+        console.log(data);
+  
+        // Filter the data to include only items in the "Pricing" category
+        const filteredData = data.filter(item => item.kategori === 'Pricing');
+  
+        // Process the filtered data to parse features JSON strings
+        const processedData = filteredData.map(item => {
           let parsedFeatures;
           
           try {
-            // Parse the fitur string into an array if it's a valid JSON string
-            parsedFeatures = JSON.parse(item.fitur);
-
+            // Parse the fitur string twice because it's double-encoded
+            parsedFeatures = JSON.parse(JSON.parse(item.fitur));
+            
             // Ensure parsedFeatures is an array
             if (!Array.isArray(parsedFeatures)) {
               parsedFeatures = [parsedFeatures];
@@ -80,10 +109,9 @@ const ProductCategory = () => {
           } catch (e) {
             // If parsing fails, handle the single string or invalid JSON gracefully
             console.error('Failed to parse fitur:', e);
-            console.log('Using single string as fitur:', parsedFeatures);
             parsedFeatures = [item.fitur.replace(/['"]+/g, '')]; // Remove quotes if it's not a JSON array
           }
-
+  
           return {
             name: item.nama,
             description: item.deskripsi,
@@ -91,15 +119,16 @@ const ProductCategory = () => {
             features: parsedFeatures,
           };
         });
-
+  
         setProducts(processedData);
       } catch (error) {
         console.error('Error fetching products:', error);
       }
     };
-
+  
     fetchProducts();
   }, []);
+  
 
   return (
     <div className="bg-white py-10 px-4 text-center">

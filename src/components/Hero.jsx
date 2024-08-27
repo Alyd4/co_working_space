@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
+
 import logo from "../assets/logo_sembangin.png";
-import { NavLink,Link } from 'react-router-dom';
+import { NavLink,Link, useNavigate } from 'react-router-dom';
 import { IoSearch } from "react-icons/io5";
 import { FaArrowRight } from "react-icons/fa6";
 import pin from "../assets/pin.png";
@@ -16,6 +17,32 @@ import cursor from "../assets/cursor.png";
 import card from "../assets/Business Card and a Clip.png"
 
 function Hero() {
+  const [query, setQuery] = useState('');
+  const navigate = useNavigate(); // Inisialisasi history untuk navigasi
+  const handleSearch = () => {
+    const queryLowerCase = query.toLowerCase(); // Convert the query to lowercase
+  
+    // Define keyword-to-path mappings
+    const keywordMappings = {
+      produk: '/Product',
+      product : '/Product',
+      layanan: '/Layanan',
+      pricing: '/', // Example for an additional keyword
+      // Add more mappings as needed
+    };
+  
+    // Iterate over the mappings to find a match
+    for (const [keyword, path] of Object.entries(keywordMappings)) {
+      if (queryLowerCase.includes(keyword)) {
+        navigate(path); // Navigate to the matched path
+        return;
+      }
+    }
+  
+    // Navigate to the home page if no keyword matches
+    navigate('/');
+  };
+  
   return (
     <section className="relative bg-white h-screen flex flex-col justify-center items-center text-center">
       {/* Background Elements */}
@@ -94,10 +121,16 @@ function Hero() {
       <div className="mt-8 flex justify-center items-center gap-2">
         <input 
           type="text" 
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
           placeholder="Search for specific features " 
           className="border border-gray-300 rounded-full py-3 px-5 w-96"
         />
-        <button className=" bg-black text-white py-3.5 px-10 rounded-full hover:bg-blue-600 text-xs flex h-12">
+        <button 
+        onClick={handleSearch}
+        className=" bg-black text-white py-3.5 px-10 rounded-full hover:bg-blue-600 text-xs flex h-12">
+
           Mulai Sekarang <FaArrowRight className="mt-1 ml-1" />
         </button>
       </div>
