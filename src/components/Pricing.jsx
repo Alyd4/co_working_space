@@ -97,19 +97,23 @@ const ProductCategory = () => {
         // Process the filtered data to parse features JSON strings
         const processedData = filteredData.map(item => {
           let parsedFeatures;
-          
+  
           try {
-            // Parse the fitur string twice because it's double-encoded
-            parsedFeatures = JSON.parse(JSON.parse(item.fitur));
-            
-            // Ensure parsedFeatures is an array
+            // Try parsing the fitur twice to handle double-encoded strings
+            parsedFeatures = JSON.parse(item.fitur);
+  
+            // Check if parsedFeatures is still a string and needs further parsing
+            if (typeof parsedFeatures === 'string') {
+              parsedFeatures = JSON.parse(parsedFeatures);
+            }
+  
+            // Ensure parsedFeatures is an array, if it's a single string, wrap it in an array
             if (!Array.isArray(parsedFeatures)) {
               parsedFeatures = [parsedFeatures];
             }
           } catch (e) {
-            // If parsing fails, handle the single string or invalid JSON gracefully
-            console.error('Failed to parse fitur:', e);
-            parsedFeatures = [item.fitur.replace(/['"]+/g, '')]; // Remove quotes if it's not a JSON array
+            // If parsing fails, assume it's a simple string, split by commas, and clean quotes
+            parsedFeatures = item.fitur.replace(/['"]+/g, '').split(',').map(f => f.trim());
           }
   
           return {

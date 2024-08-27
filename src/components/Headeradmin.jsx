@@ -34,13 +34,13 @@ function Header({ onSearch }) {
 
   return (
     <header className="flex justify-between items-center bg-white ">
-      <div className="flex items-center">
+      <div className="flex-grow">
         <input
           type="text"
           placeholder="Search products or services..."
           value={searchQuery}
           onChange={handleSearchChange}
-          className="px-4 py-2 border rounded-md focus:outline-none"
+          className="px-4 py-2 w-[80%] text-left text-sm border rounded-md focus:outline-none"
         />
       </div>
       <div className="flex items-center space-x-4">

@@ -34,9 +34,9 @@ const ProductCard = ({ name, description, price, features, img }) => {
   return (
     <div className="bg-white shadow-lg rounded-lg p-4  w-full sm:w-64 md:w-80 lg:w-96 xl:w-[24rem]">
       <div className="flex flex-row">
-        <div className="flex flex-col">
+        <div className="flex flex-col  w-[80%]">
           <h3 className="text-lg font-semibold mb-2">{name}</h3>
-          <p className="text-sm text-gray-600 mb-2">{description}</p>
+          <p className="text-sm text-gray-600 mb-2 break-words">{description}</p>
           <p className="text-lg font-bold text-blue-600 mb-2">{price}</p>
         </div>
         {img && (
@@ -115,7 +115,7 @@ const ProductCategory = () => {
   <div className="bg-white py-8 px-12 pt-28 pb-12">
     <h2 className="text-2xl font-bold text-blue-600 mb-4">Kategori Layanan</h2>
     <p className="text-gray-600 mb-8">Dari Pembuatan Domain hingga Web Hosting dan Layanan Digital Lainnya, Kami Hadir untuk Membantu Anda Membangun dan Mengoptimalkan Kehadiran Online dengan Solusi yang Dapat Diandalkan, Cepat, dan Mendukung Pertumbuhan Bisnis Anda di Era Digital.</p>
-    <div className="grid grid-cols-1 gap-x-8 gap-y-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 mx-52">
+    <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
     {products.map((product, index) => (
         <ProductCard key={index} {...product} />
       ))}

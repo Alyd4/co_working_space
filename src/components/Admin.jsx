@@ -141,7 +141,8 @@ function AddItem() {
             required
           />
         </div>
-        <div className="mb-4">
+        <div className="flex flex-row justify-between">
+        <div className="mb-4 w-[48%]">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="price">
             Harga
           </label>
@@ -153,7 +154,7 @@ function AddItem() {
             onChange={(e) => setPrice(e.target.value)}
           />
         </div>
-        <div className="mb-4">
+        <div className="mb-4 w-[48%]">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="category">
             Kategori
           </label>
@@ -168,6 +169,7 @@ function AddItem() {
             <option value="Layanan">Layanan</option>
             <option value="Pricing">Pricing</option>
           </select>
+        </div>
         </div>
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="description">
