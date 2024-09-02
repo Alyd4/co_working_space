@@ -9,7 +9,7 @@ const ProductCard = ({ name, description, price, features }) => {
   const location = useLocation();
   console.log('Location State:', location.state);
   const isPremium = name === 'Premium';
-  const isCustom = name === 'Costume';  // Sesuaikan pengecekan untuk "Costume"
+  const isCustom = name === 'Custom';  // Sesuaikan pengecekan untuk "Costume"
   
   const sellerEmail = "pkbikepri@pkbi.or.id"; // Ganti dengan email penjual atau penyedia website
 
@@ -50,9 +50,9 @@ const ProductCard = ({ name, description, price, features }) => {
         {/* Abaikan harga jika produk adalah "Costume" */}
         {!isCustom && (
           <>
-            <p className="text-lg font-bold text-blue-600 mb-2 text-left">{price}</p>
-            <button className="bg-blue-600 text-white py-2 px-4 rounded-xl w-[80%] mx-auto my-2" onClick={handleBuyClick}>
-              Beli
+            <p className="text-lg font-bold text-black mb-2 text-left sm:mb-[10%]">{price}</p>
+            <button className="bg-blue-600 text-white py-2 px-4 rounded-full w-[80%] mx-auto my-2 sm:py[30%] sm:px[50%]" onClick={handleBuyClick}>
+              Pilih Paket
             </button>
           </>
         )}
@@ -73,8 +73,8 @@ const ProductCard = ({ name, description, price, features }) => {
       </div>
 
       {isCustom && (
-        <button className="bg-blue-600 text-white py-2 px-4 rounded-xl w-[80%] mx-auto my-2 mt-auto" onClick={handleBuyClick}>
-          Beli
+        <button className="bg-blue-600 text-white py-2 px-4 rounded-full w-[80%] mx-auto my-2 mt-auto" onClick={handleBuyClick}>
+          Pilih Paket
         </button>
       )}
     </div>
@@ -97,19 +97,23 @@ const ProductCategory = () => {
         // Process the filtered data to parse features JSON strings
         const processedData = filteredData.map(item => {
           let parsedFeatures;
-          
+  
           try {
-            // Parse the fitur string twice because it's double-encoded
-            parsedFeatures = JSON.parse(JSON.parse(item.fitur));
-            
-            // Ensure parsedFeatures is an array
+            // Try parsing the fitur twice to handle double-encoded strings
+            parsedFeatures = JSON.parse(item.fitur);
+  
+            // Check if parsedFeatures is still a string and needs further parsing
+            if (typeof parsedFeatures === 'string') {
+              parsedFeatures = JSON.parse(parsedFeatures);
+            }
+  
+            // Ensure parsedFeatures is an array, if it's a single string, wrap it in an array
             if (!Array.isArray(parsedFeatures)) {
               parsedFeatures = [parsedFeatures];
             }
           } catch (e) {
-            // If parsing fails, handle the single string or invalid JSON gracefully
-            console.error('Failed to parse fitur:', e);
-            parsedFeatures = [item.fitur.replace(/['"]+/g, '')]; // Remove quotes if it's not a JSON array
+            // If parsing fails, assume it's a simple string, split by commas, and clean quotes
+            parsedFeatures = item.fitur.replace(/['"]+/g, '').split(',').map(f => f.trim());
           }
   
           return {
@@ -133,9 +137,12 @@ const ProductCategory = () => {
   return (
     <div className="bg-white py-10 px-4 text-center">
       <h2 className="text-2xl font-bold text-black mb-4">Paket Penawaran</h2>
-      <h1 className="text-3xl font-bold text-blue-600 mb-4">Penawaran Harga Terbaik untuk Semua Kebutuhan Anda</h1>
-      <p className="text-gray-600 mb-8">Platform Penjualan Produk dan Layanan Ruang Kerja Virtual untuk Komunitas</p>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 px-10">
+      <h1 className="text-4xl font-bold text-blue-600">Penawaran Harga Terbaik untuk</h1>
+      <h1 className='text-4xl font-bold text-blue-600 mb-4'>
+      Semua Kebutuhan Anda
+      </h1>
+      <p className="font-medium text-xl text-black mb-28">Platform Penjualan Produk dan Layanan Ruang Kerja Virtual untuk Komunitas</p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 px-40 ">
         {products.map((product, index) => (
           <ProductCard key={index} {...product} />
         ))}

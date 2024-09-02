@@ -1,4 +1,6 @@
 import React from "react";
+import { FaTableList } from "react-icons/fa6";
+import { PiShoppingBagOpenFill } from "react-icons/pi";
 
 function Sidebar({ setActiveComponent }) {
   return (
@@ -11,44 +13,16 @@ function Sidebar({ setActiveComponent }) {
           <li>
             <button
               onClick={() => setActiveComponent('Admin')}
-              className="w-full text-left flex items-center px-6 py-2 mt-4 text-gray-600 hover:bg-blue-100 hover:text-blue-600 transition-colors duration-300"
-            >
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
+              className="w-full text-left flex items-center px-6 py-2 mt-4 text-black hover:bg-blue-100 hover:text-blue-600 transition-colors duration-300"
+            ><PiShoppingBagOpenFill className="w-9 h-9" />
               <span className="mx-4 font-medium">Tambah Produk / Layanan</span>
             </button>
           </li>
           <li>
             <button
               onClick={() => setActiveComponent('ProdukLayananList')}
-              className="w-full text-left flex items-center px-6 py-2 mt-4 text-gray-600 hover:bg-blue-100 hover:text-blue-600 transition-colors duration-300"
-            >
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M3 7h18M9 12h6m-6 5h6"
-                />
-              </svg>
+              className="w-full text-left flex items-center px-6 py-2 mt-4 text-black hover:bg-blue-100 hover:text-blue-600 transition-colors duration-300"
+            ><FaTableList className="w-6 h-6" />
               <span className="mx-4 font-medium">Produk / Layanan List</span>
             </button>
           </li>

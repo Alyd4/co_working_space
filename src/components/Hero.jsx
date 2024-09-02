@@ -16,7 +16,7 @@ import note2 from "../assets/note.png";
 import cursor from "../assets/cursor.png";
 import card from "../assets/Business Card and a Clip.png"
 
-function Hero() {
+function  Hero() {
   const [query, setQuery] = useState('');
   const navigate = useNavigate(); // Inisialisasi history untuk navigasi
   const handleSearch = () => {
@@ -44,9 +44,9 @@ function Hero() {
   };
   
   return (
-    <section className="relative bg-white h-screen flex flex-col justify-center items-center text-center">
+    <section className="relative bg-white h-screen flex flex-col justify-center items-center text-center ">
       {/* Background Elements */}
-      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-white to-gray-100 -z-10" />
+      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-white to-gray-100 -z-10 md:w-32 lg:w-48" />
 
       {/* Floating Stationery Assets */}
       <img
@@ -129,7 +129,7 @@ function Hero() {
         />
         <button 
         onClick={handleSearch}
-        className=" bg-black text-white py-3.5 px-10 rounded-full hover:bg-blue-600 text-xs flex h-12">
+        className=" bg-gray-50 text-white py-2 px-3 rounded-full font-medium hover:bg-blue-600 text-sm flex h-10 ">
 
           Mulai Sekarang <FaArrowRight className="mt-1 ml-1" />
         </button>

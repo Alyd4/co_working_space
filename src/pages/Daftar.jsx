@@ -63,7 +63,7 @@ const Register = () => {
                     </div>
                     <h2 className="text-2xl font-bold text-blue-600 mb-2">Daftar</h2>
                     <p className="text-sm text-gray-600 mb-8">
-                        Pucuk ubi pucuk kangkung, banyak cakap pecah muncung
+                    Silahkan daftarkan email dan password untuk melakukan login
                     </p>
                     <form onSubmit={handleSubmit}>
                         <div className="mb-6">

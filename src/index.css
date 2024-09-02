@@ -8,7 +8,10 @@
     padding: 0;
     box-sizing: border-box;
     font-family: "Outfit", sans-serif;
-    
+}
+
+#root{
+    overflow-x: hidden;
 }
 .LinearGradient {
     background: linear-gradient(180deg, #fde1ff 0%, #e1ffea22 60%);

@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { LuLogOut } from "react-icons/lu";
 import axios from 'axios'; // Import axios if you need to make an API call
 
 function Header({ onSearch }) {
   const [searchQuery, setSearchQuery] = useState("");
-  const location = useLocation();
   const navigate = useNavigate();
-  const email = localStorage.getItem('email');
-
+  const user = JSON.parse(localStorage.getItem('user'));
+  const email = user ? user.email : null;
 
   const handleSearchChange = (e) => {
     const query = e.target.value;
@@ -21,7 +21,7 @@ function Header({ onSearch }) {
       // await axios.post('/api/auth/logout');
 
       // Clear user data from local storage or session storage
-      localStorage.removeItem('email');
+      localStorage.removeItem('user'); // Changed from 'email' to 'user'
      
       // Redirect to the login page or home page
       navigate('/'); // Change this to the appropriate route
@@ -35,35 +35,23 @@ function Header({ onSearch }) {
 
   return (
     <header className="flex justify-between items-center bg-white ">
-      <div className="flex items-center">
+      <div className="flex-grow">
         <input
           type="text"
-          placeholder="Search products or services..."
+          placeholder="cari nama produk/layanan/paket"
           value={searchQuery}
           onChange={handleSearchChange}
-          className="px-4 py-2 border rounded-md focus:outline-none"
+          className="px-4 py-2 w-[80%] text-left text-sm border rounded-full focus:outline-none"
         />
       </div>
       <div className="flex items-center space-x-4">
         <span className="font-medium text-gray-600">{email}</span>
         <button
-          className="text-red-500 hover:text-red-700"
+          className="flex items-center space-x-2 bg-red-500 hover:bg-red-700 text-white py-2 px-4 rounded-full"
           onClick={handleLogout}
         >
-          <svg
-            className="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
+        <LuLogOut className="w-4 h-4" />
+          <span className="text-sm font-medium">Logout</span>
         </button>
       </div>
     </header>

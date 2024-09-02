@@ -11,7 +11,7 @@ const Home = () => {
   return (
    <>
    <Header/>
-   <Hero/>
+   <Hero />
    <Popular/>
    <Pricing/>
    <FAQ/>

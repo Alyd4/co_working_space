@@ -145,20 +145,21 @@ const InvoiceScreen = () => {
 
                 <div className='mt-10'>
                   <div>
-                    <h2 className='font-bold text-sm'>Bank isi sini</h2>
-                    <p className='font-semibold'>email</p>
+                    <h2 className='font-bold text-sm'>104218707148 (BANK JAGO) a.n AHMAD SYAHRONI</h2>
+                    <p className='font-semibold'>pkbikepri@pkbi.or.id</p>
                   </div>
                   <div>
-                    <p className='text-blue-600'>syarat dan ketentuan</p>
+                    <p className='text-blue-600 font-semibold mt-3'>Syarat dan Ketentuan:</p>
+                    <p className='text-gray-50 font-medium mb-10'>Jika sudah membayar ke Bank yang telah ditentukan, silahkan upload invoice dan bukti pembayaran ke email yang tertera, selanjutnya akan kami buatkan SPK (Surat Perjanjian Kerjasama) untuk komunitas anda</p>
                   </div>
                 </div>
                  
-                <div className='flex justify-center'>
-                  <p className='text-blue-600 text-center'>ini alamat intinya</p>
-                  <p className='text-blue-600 text-center'>ini alamat intinya</p>
+                <div className='font-semibold'>
+                  <p className='text-blue-600 text-center'>Jalan Kaka Tua II, Desa Toapaya Selatan, RT/RW 001/001, Kec,</p>
+                  <p className='text-center text-blue-600'>Toapaya, Kabupaten Bintan, Kepulauan Riau, Indonesia</p>
                 </div>
                 <div>
-                  <p className='text-center'>no hp</p>
+                  <p className='text-center font-semibold text-black'>Hubungi: +62 823-8814-9914</p>
                 </div>
 
                 <div className='flex bg-blue-600 w-full h-3 my-5'></div>

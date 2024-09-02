@@ -66,7 +66,7 @@ const Login = () => {
           </div>
           <h2 className="text-2xl font-bold text-blue-600 mb-2">Masuk</h2>
           <p className="text-sm text-gray-600 mb-8">
-            Pucuk ubi pucuk kangkung, banyak cakap pecah muncungs
+            Silahkan masukan email dan password sesuai yang anda daftarkan
           </p>
           <form onSubmit={handleSubmit}>
             <div className="mb-6">

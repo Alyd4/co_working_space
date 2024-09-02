@@ -18,7 +18,7 @@ import youtube from "../assets/youtube.png";
 const Footer = () => {
   return (
     <footer className="bg-white py-6 text-center px-12">
-      <div className="container mx-auto flex justify-between items-center">
+      <div className="container mx-auto flex justify-between items-center sm:space-x-3">
         <div className="mb-4">
           <span className="text-xl font-bold text-blue-600">Co-Working Space</span>
         </div>

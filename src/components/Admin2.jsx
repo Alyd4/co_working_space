@@ -3,6 +3,9 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import EditModal from "./EditModal";
 import DetailsModal from "./DetailsModal";
+import { TbEyeSearch } from "react-icons/tb";
+import { TbPencilCog } from "react-icons/tb";
+import { BiTrash } from "react-icons/bi";
 import Header from "./Headeradmin";
 
 function ItemList() {
@@ -164,58 +167,19 @@ function ItemList() {
                       onClick={() => handleDetails(item.id)}
                       className="text-green-500 hover:text-green-700 mr-4"
                     >
-                      <svg
-                        className="w-6 h-6"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M15 12a3 3 0 11-6 0 3 3 0 016 0zm7.25-7.25a1.25 1.25 0 011.25 1.25c0 7.25-8.25 12.25-8.25 12.25s-8.25-5-8.25-12.25a1.25 1.25 0 011.25-1.25h2.5a1.25 1.25 0 011.25 1.25c0 2.75 3.25 5 3.25 5s3.25-2.25 3.25-5a1.25 1.25 0 011.25-1.25h2.5z"
-                        />
-                      </svg>
+                      <TbEyeSearch className="w-6 h-6"/>
                     </button>
                     <button
                       onClick={() => handleEdit(item.id)}
                       className="text-blue-500 hover:text-blue-700 mr-4"
                     >
-                      <svg
-                        className="w-6 h-6"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M11 4h7a2 2 0 012 2v7m-1.414-1.414L6.414 20a2 2 0 01-.707.707L2 22l1.293-3.707a2 2 0 01.707-.707l10.293-10.293z"
-                        />
-                      </svg>
+                      <TbPencilCog className="w-6 h-6"/>
                     </button>
                     <button
                       onClick={() => handleDelete(item.id)}
                       className="text-red-500 hover:text-red-700"
                     >
-                      <svg
-                        className="w-6 h-6"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M19 7l-1 12a2 2 0 01-2 2H8a2 2 0 01-2-2L5 7m5 4v6m4-6v6M9 7h6m-6 0V5a2 2 0 012-2h2a2 2 0 012 2v2m-6 0h6"
-                        />
-                      </svg>
+                    <BiTrash className="w-6 h-6"/>
                     </button>
                   </td>
                 </tr>

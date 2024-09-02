@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { IoIosAddCircleOutline } from "react-icons/io";
+import { LuDelete } from "react-icons/lu";
+import { FiUploadCloud } from "react-icons/fi";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -87,7 +90,7 @@ function AddItem() {
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="image">
             Tambah gambar
           </label>
-          <div className="flex justify-center items-center w-full h-48 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer">
+          <div className="flex justify-center items-center w-full h-48 border-2 border-dashed border-blue-400 rounded-lg cursor-pointer">
             <input
               type="file"
               id="image"
@@ -106,20 +109,7 @@ function AddItem() {
                 />
               ) : (
                 <>
-                  <svg
-                    className="w-12 h-12"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M7 16V8m0 0l-4 4m4-4l4 4m5-4h2a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2v-8a2 2 0 012-2h2m5-4h4a2 2 0 012 2v4"
-                    />
-                  </svg>
+                <FiUploadCloud className="w-12 h-12" />
                   <span>Click to browse or drag and drop your files</span>
                 </>
               )}
@@ -141,7 +131,8 @@ function AddItem() {
             required
           />
         </div>
-        <div className="mb-4">
+        <div className="flex flex-row justify-between">
+        <div className="mb-4 w-[48%]">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="price">
             Harga
           </label>
@@ -153,7 +144,7 @@ function AddItem() {
             onChange={(e) => setPrice(e.target.value)}
           />
         </div>
-        <div className="mb-4">
+        <div className="mb-4 w-[48%]">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="category">
             Kategori
           </label>
@@ -166,8 +157,9 @@ function AddItem() {
           >
             <option value="Produk">Produk</option>
             <option value="Layanan">Layanan</option>
-            <option value="Pricing">Pricing</option>
+            <option value="Pricing">Paket</option>
           </select>
+        </div>
         </div>
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="description">
@@ -196,9 +188,9 @@ function AddItem() {
             <button
               type="button"
               onClick={handleAddFeature}
-              className="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              className="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline"
             >
-              Tambah
+            <IoIosAddCircleOutline className="w-6 h-6" />
             </button>
           </div>
           <ul className="mt-2">
@@ -208,9 +200,9 @@ function AddItem() {
                 <button
                   type="button"
                   onClick={() => handleRemoveFeature(index)}
-                  className="text-red-500 hover:text-red-700 text-sm"
+                  className="text-red-500 hover:text-red-700 text-sm mr-4"
                 >
-                  Hapus
+                <LuDelete className="w-6 h-6" />
                 </button>
               </li>
             ))}
