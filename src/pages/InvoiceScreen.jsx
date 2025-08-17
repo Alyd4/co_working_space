@@ -7,6 +7,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import logo from '../assets/logo_sembangin.png';
 import { useLocation, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const InvoiceScreen = () => {
   const navigate = useNavigate();
@@ -26,6 +27,17 @@ const InvoiceScreen = () => {
   console.log("Email from localStorage:", email);
   console.log("Formatted Date:", formattedDate);
 
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    }
+  });
  
   const handlePrint = () => {
     const printableArea = document.getElementById('printable-area').innerHTML;
@@ -33,8 +45,54 @@ const InvoiceScreen = () => {
     document.body.innerHTML = printableArea;
     window.print();
     document.body.innerHTML = originalContents;
-    window.location.reload(); // Refresh the page to restore content
+    setTimeout(() => {
+      // const isPrinted = window.confirm("Apakah Anda sudah selesai mencetak?");
+      // if (isPrinted) {
+      // Toast.fire({
+      //     icon: "success",
+      //     title: "Download Berhasil"
+      // });
+      // } else {
+        // Toast.fire({
+        //   icon: "error",
+        //   title: "Download Gagal"
+        // });
+      // }
+      Swal.fire({
+        title: "Do you want to save the changes?",
+        showDenyButton: true,
+        confirmButtonText: "Save",
+        denyButtonText: `Don't save`,
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          Toast.fire({
+                icon: "success",
+                title: "Download Berhasil"
+            });
+        } else if (result.isDenied) {
+          Toast.fire({
+            icon: "error",
+            title: "Download Gagal"
+          });
+        }
+      });
+    }, 500);
+    
+    // window.location.reload(); // Refresh the page to restore content
   };
+
+  // const handlePrintAndConfirm = () => {
+  //   window.print();
+  //   setTimeout(() => {
+  //     const isPrinted = window.confirm("Apakah Anda sudah selesai mencetak?");
+  //     if (isPrinted) {
+  //       toast.success("Terima kasih telah mencetak invoice.");
+  //     } else {
+  //       toast.error("Pencetakan dibatalkan.");
+  //     }
+  //   }, 500);
+  // };
 
   const handleCancel = () => {
     toast(
