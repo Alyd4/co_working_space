@@ -22,6 +22,7 @@ function Header({ onSearch }) {
 
       // Clear user data from local storage or session storage
       localStorage.removeItem('user'); // Changed from 'email' to 'user'
+      localStorage.removeItem('user'); // Changed from 'email' to 'user'
      
       // Redirect to the login page or home page
       navigate('/'); // Change this to the appropriate route
@@ -35,6 +36,7 @@ function Header({ onSearch }) {
 
   return (
     <header className="flex justify-between items-center bg-white ">
+      {/* <div className="flex-grow"> */}
       <div className="flex-grow">
         <input
           type="text"

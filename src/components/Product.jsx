@@ -41,7 +41,7 @@ const ProductCard = ({ name, description, price,  features = [], img }) => {
   
   
   return (
-    <div className="bg-white shadow-lg rounded-lg p-4 w-80 flex flex-col md:w-50 max-w-sm">
+    <div className="bg-white shadow-lg rounded-lg p-4 w-80 flex flex-col">
     <div className="flex flex-col flex-grow">
       <div className="flex flex-row mb-4">
         <div className="flex flex-col w-[80%]">
@@ -69,7 +69,7 @@ const ProductCard = ({ name, description, price,  features = [], img }) => {
       )}
     </div>
     <div className="flex justify-center mt-auto mb-5">
-      <button onClick={handleBuyClick} className="bg-blue-600 w-[80%] text-white py-1 px-1 rounded-lg">
+      <button onClick={handleBuyClick} className="bg-blue-600 w-[80%] text-white py-2 px-4 rounded-lg">
         Beli
       </button>
     </div>
@@ -119,7 +119,6 @@ const ProductCategory = () => {
             description: item.deskripsi,
             price: `Rp ${parseFloat(item.harga).toLocaleString('id-ID', { minimumFractionDigits: 2 })}`,
             features: parsedFeatures,
-            img : item.gambarUrl
           };
         });
   
