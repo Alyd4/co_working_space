@@ -2,7 +2,12 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { FiChevronLeft, FiChevronRight, FiPrinter } from 'react-icons/fi';
+import {
+  FiChevronLeft,
+  FiChevronRight,
+  FiDownload,
+  FiPrinter,
+} from 'react-icons/fi';
 import Header from './Headeradmin';
 
 function Laporan() {
@@ -22,6 +27,7 @@ function Laporan() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [currentMonth, setCurrentMonth] = useState(''); // Default to all months
+  const [currentYear, setCurrentYear] = useState(new Date().getFullYear()); // Current year
 
   const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -42,10 +48,16 @@ function Laporan() {
     { value: '12', label: 'Desember' },
   ];
 
+  // Generate years (current year and 2 years back)
+  const years = [];
+  for (let i = currentYear; i >= currentYear - 2; i--) {
+    years.push(i);
+  }
+
   // Fetch data laporan saat komponen dimuat atau filter berubah
   useEffect(() => {
     fetchReports();
-  }, [currentMonth]);
+  }, [currentMonth, currentYear]);
 
   // Function untuk mendapatkan data laporan dari API
   const fetchReports = async () => {
@@ -56,6 +68,7 @@ function Laporan() {
       // Build query parameters
       const params = new URLSearchParams();
       if (currentMonth) params.append('month', currentMonth);
+      if (currentYear) params.append('year', currentYear);
 
       console.log('Fetching reports with params:', params.toString());
 
@@ -100,6 +113,12 @@ function Laporan() {
     setCurrentPage(1); // Reset to first page
   };
 
+  // Handler untuk perubahan tahun
+  const handleYearChange = e => {
+    setCurrentYear(parseInt(e.target.value));
+    setCurrentPage(1); // Reset to first page
+  };
+
   // Handler untuk pagination
   const handlePageChange = page => {
     setCurrentPage(page);
@@ -119,7 +138,7 @@ function Laporan() {
     const monthLabel = currentMonth
       ? months.find(m => m.value === currentMonth)?.label
       : 'Semua Bulan';
-    const reportTitle = `Laporan ${monthLabel}`;
+    const reportTitle = `Laporan ${monthLabel} ${currentYear}`;
 
     printWindow.document.write(`
       <html>
@@ -159,6 +178,27 @@ function Laporan() {
     toast.success(`Laporan ${reportTitle} berhasil dicetak`);
   };
 
+  // Handler untuk export laporan
+  const handleExportReport = () => {
+    if (reports.length === 0) {
+      toast.warning('Tidak ada data untuk diexport');
+      return;
+    }
+
+    const monthLabel = currentMonth
+      ? months.find(m => m.value === currentMonth)?.label
+      : 'Semua_Bulan';
+    toast.info(
+      `Export laporan ${monthLabel}_${currentYear} akan segera tersedia`,
+    );
+    // In a real application, this would trigger a download of an Excel file
+  };
+
+  // Calculate total revenue from current page
+  const calculateTotalRevenue = () => {
+    return summary.totalRevenue.toLocaleString('id-ID');
+  };
+
   // Get current page data
   const getCurrentPageData = () => {
     const itemsPerPage = 10;
@@ -188,6 +228,36 @@ function Laporan() {
         <div className="p-4 flex justify-between items-center">
           <h1 className="text-2xl font-semibold">Laporan Produk & Layanan</h1>
           <div className="flex space-x-2">
+            {/* Dropdown Tahun */}
+            <div className="relative">
+              <select
+                value={currentYear}
+                onChange={handleYearChange}
+                className="px-3 py-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none text-center"
+                style={{
+                  borderRadius: '500px',
+                  width: '80px',
+                  height: '28px',
+                  fontSize: '12px',
+                }}
+              >
+                {years.map(year => (
+                  <option key={year} value={year}>
+                    {year}
+                  </option>
+                ))}
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                <svg
+                  className="fill-current h-4 w-4"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                >
+                  <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                </svg>
+              </div>
+            </div>
+
             {/* Dropdown Bulan */}
             <div className="relative">
               <select
@@ -233,6 +303,58 @@ function Laporan() {
               <FiPrinter size={14} />
               <span className="ml-1">Cetak</span>
             </button>
+
+            <button
+              onClick={handleExportReport}
+              className="border-2 hover:bg-green-50 px-3 py-1 flex items-center justify-center"
+              style={{
+                borderColor: '#10B981',
+                color: '#10B981',
+                width: '70px',
+                height: '28px',
+                fontSize: '12px',
+                borderRadius: '500px',
+              }}
+            >
+              <FiDownload size={14} />
+              <span className="ml-1">Export</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Summary Cards */}
+        <div className="p-4 grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+          <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+            <h3 className="text-blue-800 font-semibold text-sm">
+              Total Pendapatan
+            </h3>
+            <p className="text-2xl font-bold text-blue-900">
+              Rp {calculateTotalRevenue()}
+            </p>
+          </div>
+          <div className="bg-green-50 p-4 rounded-lg border border-green-200">
+            <h3 className="text-green-800 font-semibold text-sm">
+              Total Transaksi
+            </h3>
+            <p className="text-2xl font-bold text-green-900">
+              {summary.totalTransactions}
+            </p>
+          </div>
+          <div className="bg-purple-50 p-4 rounded-lg border border-purple-200">
+            <h3 className="text-purple-800 font-semibold text-sm">
+              Produk Terjual
+            </h3>
+            <p className="text-2xl font-bold text-purple-900">
+              {summary.productCount}
+            </p>
+          </div>
+          <div className="bg-orange-50 p-4 rounded-lg border border-orange-200">
+            <h3 className="text-orange-800 font-semibold text-sm">
+              Layanan Terjual
+            </h3>
+            <p className="text-2xl font-bold text-orange-900">
+              {summary.serviceCount}
+            </p>
           </div>
         </div>
 
@@ -302,7 +424,10 @@ function Laporan() {
                     </thead>
                     <tbody style={{ opacity: 0.8 }}>
                       {getCurrentPageData().map(report => (
-                        <tr key={report.id} className="border-b">
+                        <tr
+                          key={report.id}
+                          className="border-b hover:bg-gray-50"
+                        >
                           <td className="py-3 px-4 text-center">{report.id}</td>
                           <td className="py-3 px-4 text-center">
                             {report.name}

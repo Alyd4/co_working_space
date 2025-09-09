@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
 import Fitur1 from "./pages/Fitur1";
 import Fitur2 from "./pages/Fitur2";
@@ -13,7 +13,7 @@ import Aadmin from "./pages/Aadmin";
 import PrivateRoute from "./components/PrivateRoute";
 
 export default function App() {
-  const user = JSON.parse(localStorage.getItem('user')); // Get the logged-in user details
+  const user = JSON.parse(localStorage.getItem("user")); // Get the logged-in user details
   const isAdmin = user?.isAdmin; // Check if the user is an admin
 
   return (
@@ -34,7 +34,42 @@ export default function App() {
           <Route element={<PrivateRoute isAdmin={isAdmin} />}>
             <Route path="/admin" element={<Admin />} />
             <Route path="/admin2" element={<Admin2 />} />
-            <Route path="/aadmin" element={<Aadmin />} />
+            <Route
+              path="/aadmin"
+              element={<Navigate to="/aadmin/dashboard" replace />}
+            />
+            <Route
+              path="/aadmin/dashboard"
+              element={<Aadmin activeView="Dashboard" />}
+            />
+            <Route
+              path="/aadmin/pelanggan"
+              element={<Aadmin activeView="KelolaPelanggan" />}
+            />
+            <Route
+              path="/aadmin/item"
+              element={<Aadmin activeView="ProdukLayananList" />}
+            />
+            <Route
+              path="/aadmin/pesan"
+              element={<Aadmin activeView="Pesan" />}
+            />
+            <Route
+              path="/aadmin/promosi"
+              element={<Aadmin activeView="KelolaPromosi" />}
+            />
+            <Route
+              path="/aadmin/pesanan"
+              element={<Aadmin activeView="KelolaPesanan" />}
+            />
+            <Route
+              path="/aadmin/penyimpanan"
+              element={<Aadmin activeView="Penyimpanan" />}
+            />
+            <Route
+              path="/aadmin/laporan"
+              element={<Aadmin activeView="Laporan" />}
+            />
           </Route>
         </Routes>
       </BrowserRouter>
